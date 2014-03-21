@@ -29,7 +29,7 @@ object BerlinClock {
   def seconds(seconds: Int) = lamps(1)(onWhen(_ => seconds % 2 == 0)(Yellow))
   def topHours(hours: Int) = lamps(4)(onWhen(_ <= hours / 5)(Red))
   def bottomHours(hours: Int) = lamps(4)(onWhen(_ <= hours % 5)(Red))
-  def topMinutes(minutes: Int) = lamps(11)(onWhen(lamp => lamp <= minutes / 5)(lamp => if (lamp % 3 == 0) R else Y))
+  def topMinutes(minutes: Int) = lamps(11)(onWhen(_ <= minutes / 5)(lamp => if (lamp % 3 == 0) R else Y))
   def bottomMinutes(minutes: Int) = lamps(4)(onWhen(_ <= minutes % 5)(Yellow))
 
   def convertToBerlinTime(time: String): Array[String] = time.split(':') match {
