@@ -7,48 +7,57 @@ import scala.annotation.tailrec
  * @since 4/1/14
  */
 
-object Fib {
+trait Fibonacci {
+  def fib(n: Int): Int
+}
 
-   def fibRecursive(n: Int): Int =
-     if (n < 0)
-       throw new IllegalArgumentException
-     else if (n < 2)
-       1
-     else
-       fibRecursive(n - 2) + fibRecursive(n - 1)
+trait Recursive extends Fibonacci {
 
-   def memoFib(n: Int): Int = {
-     import scala.collection.mutable
-     val memo = mutable.Map.empty[Int, Int]
+  def fib(n: Int): Int =
+    if (n < 0)
+      throw new IllegalArgumentException
+    else if (n < 2)
+      1
+    else
+      fib(n - 2) + fib(n - 1)
+}
 
-     def fib(n: Int) = memo.getOrElseUpdate(n,
-       if (n < 0)
-         throw new IllegalArgumentException
-       else if (n < 2)
-         1
-       else
-         fibRecursive(n - 2) + fibRecursive(n - 1))
+trait Memoization extends Fibonacci {
+  import scala.collection.mutable
+  val memo = mutable.Map.empty[Int, Int]
 
-     fib(n)
-   }
+  def fib(n: Int) = memo.getOrElseUpdate(n,
+   if (n < 0)
+     throw new IllegalArgumentException
+   else if (n < 2)
+     1
+   else
+     fib(n - 2) + fib(n - 1)
+  )
+}
 
-   def fibTailRec(n: Int): Int = {
+trait TailRecursive extends Fibonacci {
 
-     @tailrec
-     def fib(n: Int, cur: Int, sum: Int): Int = {
-       if (n == 0)
-         sum
-       else
-         fib(n - 1, sum, sum + cur)
-     }
+  def fib(n: Int): Int = {
 
-     if (n < 0)
-       throw new IllegalArgumentException
-     else
-       fib(n, 0, 1)
-   }
+    @tailrec
+    def inner(n: Int, cur: Int, sum: Int): Int = {
 
-   def streamingFib(n: Int): Int = {
+      if (n == 0)
+        sum
+      else
+        inner(n - 1, sum, sum + cur)
+    }
+
+    if (n < 0)
+      throw new IllegalArgumentException
+    else
+      inner(n, 0, 1)
+  }
+}
+
+trait Streaming extends Fibonacci {
+   def fib(n: Int): Int = {
      if (n < 0)
        throw new IllegalArgumentException
 
