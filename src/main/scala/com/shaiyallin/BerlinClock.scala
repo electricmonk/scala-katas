@@ -11,9 +11,11 @@ object BerlinClock {
   val R = "R"
   val O = "O"
 
-  type Color = (Int => String)
+  type ColorFunc = Int => String
+  type ConditionFunc = Int => Boolean
+  type LampState = PartialFunction[Int, String]
 
-  val onWhen: (Int => Boolean) => Color => PartialFunction[Int, String] = condition => {
+  val onWhen: ConditionFunc => ColorFunc => LampState = condition => {
     color => {
       case num: Int if condition(num) => color(num)
     }
@@ -21,10 +23,10 @@ object BerlinClock {
 
   val off: PartialFunction[Int, String] = { case _ => O }
 
-  val Red: Color  = { case _ => R }
-  val Yellow: Color  = { case _ => Y }
+  val Red: ColorFunc  = { case _ => R }
+  val Yellow: ColorFunc  = { case _ => Y }
 
-  private def lamps(length: Int)(color: PartialFunction[Int, String]) = (1 to length map (color orElse off)).mkString
+  private def lamps(length: Int)(color: LampState) = (1 to length map (color orElse off)).mkString
 
   def seconds(seconds: Int) = lamps(1)(onWhen(_ => seconds % 2 == 0)(Yellow))
   def topHours(hours: Int) = lamps(4)(onWhen(_ <= hours / 5)(Red))
