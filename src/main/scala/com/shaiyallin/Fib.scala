@@ -8,29 +8,29 @@ import scala.annotation.tailrec
  */
 
 trait Fibonacci {
-  def fib(n: Int): Int
+  def fib(n: Int): Long
 }
 
 trait Recursive extends Fibonacci {
 
-  def fib(n: Int): Int =
+  def fib(n: Int): Long =
     if (n < 0)
       throw new IllegalArgumentException
     else if (n < 2)
-      1
+      n
     else
       fib(n - 2) + fib(n - 1)
 }
 
 trait Memoization extends Fibonacci {
   import scala.collection.mutable
-  val memo = mutable.Map.empty[Int, Int]
+  val memo = mutable.Map.empty[Long, Long]
 
   def fib(n: Int) = memo.getOrElseUpdate(n,
    if (n < 0)
      throw new IllegalArgumentException
    else if (n < 2)
-     1
+     n
    else
      fib(n - 2) + fib(n - 1)
   )
@@ -38,30 +38,32 @@ trait Memoization extends Fibonacci {
 
 trait TailRecursive extends Fibonacci {
 
-  def fib(n: Int): Int = {
+  def fib(n: Int): Long = {
 
     @tailrec
-    def inner(n: Int, cur: Int, sum: Int): Int = {
+    def inner(n: Long, sum: Long, prev: Long): Long = {
 
       if (n == 0)
+        prev
+      else if (n == 1)
         sum
       else
-        inner(n - 1, sum, sum + cur)
+        inner(n - 1, sum + prev, sum)
     }
 
     if (n < 0)
       throw new IllegalArgumentException
     else
-      inner(n, 0, 1)
+      inner(n, 1, 0)
   }
 }
 
 trait Streaming extends Fibonacci {
-   def fib(n: Int): Int = {
+   def fib(n: Int): Long = {
      if (n < 0)
        throw new IllegalArgumentException
 
-     lazy val fibs: Stream[Int] = 1 #:: fibs.scanLeft(1)(_ + _)
+     lazy val fibs: Stream[Long] = 0 #:: fibs.scanLeft(1.toLong)(_ + _)
 
      fibs.take(n + 1).last
    }
