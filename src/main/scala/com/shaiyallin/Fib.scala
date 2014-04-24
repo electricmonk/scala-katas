@@ -65,6 +65,6 @@ trait Streaming extends Fibonacci {
 
      lazy val fibs: Stream[Long] = 0 #:: fibs.scanLeft(1.toLong)(_ + _)
 
-     fibs.take(n + 1).last
+     fibs(n)
    }
  }

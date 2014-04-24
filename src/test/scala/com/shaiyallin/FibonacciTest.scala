@@ -2,6 +2,7 @@ package com.shaiyallin
 
 import org.specs2.mutable.Specification
 import org.specs2.specification.Scope
+import scala.annotation.tailrec
 
 /**
  * @author shaiyallin
@@ -9,6 +10,7 @@ import org.specs2.specification.Scope
  */
 
 class FibonacciTest extends Specification {
+
 
   trait Context extends Scope with Streaming
 
