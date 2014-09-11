@@ -5,6 +5,8 @@ The katas are present in the `master` branch in form of unit tests. You may want
 or you can opt for the TDD way, writing the tests one after the other and just using the kata description as a starting point.
 If you choose to do that, I recommend that you do not look at the existing tests as to not taint your mind.
 
+Solutions are present in the `solutions` branch. Of course, these are my solutions and by no means represent the sole (or best) option possible.
+
 ## The Katas
 * Fizz Buzz
 * Fibonacci
