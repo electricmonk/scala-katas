@@ -25,6 +25,4 @@ object FizzBuzz {
   val fizzbuzz: FizzBuzz = fizz |+| buzz |+| boom
 
   val getResult: Int => String = i => fizzbuzz(i) getOrElse i.toString
-
-  val l = List(1, 2, 3)
 }
